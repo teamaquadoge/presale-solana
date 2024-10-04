@@ -1,27 +1,12 @@
-[package]
-name = "presale"
-version = "0.1.0"
-description = "Presale program for claiming tokens later on"
-edition = "2021"
-
-[lib]
-crate-type = ["cdylib", "lib"]
-name = "presale"
-
-[features]
-no-entrypoint = []
-no-idl = []
-no-log-ix-name = []
-cpi = ["no-entrypoint"]
-default = []
-idl-build = ["anchor-lang/idl-build"]
+[workspace]
+members = ["programs/*"]
 
 [profile.release]
-lto = true
-opt-level = 'z'  # Optimize for size even more aggressively than 's'
+overflow-checks = true
+lto = "fat"
+codegen-units = 1
 
-[dependencies]
-anchor-lang = "0.29.0"
-solana-program = "=1.18"
-ahash ="=0.8.7" # Was needed to fix an issue with the newer rustc compiler, see https://github.com/anza-xyz/agave/issues/1572
-solana-security-txt = "1.1.1"
+[profile.release.build-override]
+opt-level = 3
+incremental = false
+codegen-units = 1
